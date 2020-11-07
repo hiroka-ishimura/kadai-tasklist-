@@ -10,6 +10,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -18,6 +19,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password',
     ];
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -28,6 +30,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -36,4 +39,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    
+    /**
+     * このユーザが所有する投稿。（ Micropostモデルとの関係を定義）
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+    
+    
+    /**
+     * このユーザに関係するモデルの件数をロードする。
+     */
+    public function loadRelationshipCounts()
+    {
+        $this->loadCount('tasks');
+    }
 }
